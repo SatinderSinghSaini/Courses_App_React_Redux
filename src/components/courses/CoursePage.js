@@ -7,7 +7,7 @@ const CoursePage = (props) => {
   const [course, setCourse] = useState({ title: "" });
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.dispatch(createCourse(course));
+    props.createCourse(course);
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -29,11 +29,17 @@ const CoursePage = (props) => {
 
 CoursePage.propTypes = {
   courses: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  createCourse: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   return { courses: state.courses };
 }
 
-export default connect(mapStateToProps)(CoursePage);
+function mapDispatchToProps(dispatch) {
+  return {
+    createCourse: (course) => dispatch(createCourse(course)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursePage);
