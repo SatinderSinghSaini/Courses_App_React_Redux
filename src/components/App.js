@@ -5,6 +5,7 @@ import AboutPage from "./about/AboutPage";
 import Header from "./common/Header";
 import PageNotFound from "./PageNotFound";
 import CoursePage from "./courses/CoursePage";
+import ManageCourse from "./courses/ManageCourse";
 
 const App = function () {
   return (
@@ -14,6 +15,8 @@ const App = function () {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/courses" element={<CoursePage />} />
+        <Route path="/course/:slug" element={<ManageCourse />} />
+        <Route path="/course" element={<ManageCourse />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
