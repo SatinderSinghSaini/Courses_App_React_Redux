@@ -6,6 +6,8 @@ import Header from "./common/Header";
 import PageNotFound from "./PageNotFound";
 import CoursePage from "./courses/CoursePage";
 import ManageCourse from "./courses/ManageCourse";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = function () {
   return (
@@ -19,6 +21,7 @@ const App = function () {
         <Route path="/course" element={<ManageCourse />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <ToastContainer autoClose={3000} hideProgressBar />
     </div>
   );
 };

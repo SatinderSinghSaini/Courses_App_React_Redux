@@ -1,49 +1,61 @@
 import { actionTypes } from "./actionTypes";
 import * as courseApi from "../../api/courseApi";
+import { beginApiCall, apiCallError } from "./apiStatusActions";
 
-export function createCourse(course) {
-  return { type: actionTypes.CREATE_COURSE, course };
-}
-
-function loadCoursesSuccess(courses) {
+export function loadCourseSuccess(courses) {
   return { type: actionTypes.LOAD_COURSES_SUCCESS, courses: courses };
 }
 
-function updateCoursesSuccess(course) {
-  return { type: actionTypes.UPDATE_COURSE_SUCCESS, course: course };
-}
-function createCourseSuccess(course) {
+export function createCourseSuccess(course) {
   return { type: actionTypes.CREATE_COURSE_SUCCESS, course: course };
 }
 
-//Thunk is function that returns function that can execute later
+export function updateCourseSuccess(course) {
+  return { type: actionTypes.UPDATE_COURSE_SUCCESS, course: course };
+}
+
+export function deleteCourseOptimistic(course) {
+  return { type: actionTypes.DELETE_COURSE_OPTIMISTIC, course: course };
+}
+
 export function loadCourses() {
-  // dispatch to this function is passed by thunk middleware
   return function (dispatch) {
+    dispatch(beginApiCall());
     return courseApi
       .getCourses()
       .then((courses) => {
-        dispatch(loadCoursesSuccess(courses));
+        dispatch(loadCourseSuccess(courses));
       })
       .catch((error) => {
+        dispatch(apiCallError(error));
         throw error;
       });
   };
 }
 
 export function saveCourse(course) {
-  // dispatch to this function is passed by thunk middleware
-  console.log(course);
+  //eslint-disable-next-line no-unused-vars
   return function (dispatch, getState) {
+    dispatch(beginApiCall());
     return courseApi
       .saveCourse(course)
       .then((savedCourse) => {
         course.id
-          ? dispatch(updateCoursesSuccess(savedCourse))
+          ? dispatch(updateCourseSuccess(savedCourse))
           : dispatch(createCourseSuccess(savedCourse));
       })
       .catch((error) => {
+        dispatch(apiCallError(error));
         throw error;
       });
+  };
+}
+
+export function deleteCourse(course) {
+  return function (dispatch) {
+    // Doing optimistic delete, so not dispatching begin/end api call
+    // actions, or apiCallError action since we're not showing the loading status for this.
+    dispatch(deleteCourseOptimistic(course));
+    return courseApi.deleteCourse(course.id);
   };
 }

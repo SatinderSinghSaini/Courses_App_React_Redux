@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { createCourse, loadCourses } from "../../redux/actions/courseActions";
+import { loadCourses, deleteCourse } from "../../redux/actions/courseActions";
 import { loadAuthors } from "../../redux/actions/authorActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import CourseList from "./CourseList";
 import { Link } from "react-router-dom";
+import Spinner from "../common/Spinner";
+import { toast } from "react-toastify";
 
 const CoursePage = (props) => {
   useEffect(() => {
@@ -19,13 +21,26 @@ const CoursePage = (props) => {
       props.loadAuthors().catch((err) => console.log(err));
     }
   }, []);
+
+  const handleDelete = (course) => {
+    toast.success("Course Deleted.");
+    props.deleteCourse(course).catch((error) => {
+      toast.error("Delete Failed. " + error.message, { autoClose: false });
+    });
+  };
   return (
     <>
-      <Link className="btn btn-primary" to="/course">
-        Add Course
-      </Link>
-      <h2>Courses</h2>
-      <CourseList courses={props.courses} />
+      {props.loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Link className="btn btn-primary" to="/course">
+            Add Course
+          </Link>
+          <h2>Courses</h2>
+          <CourseList onDeleteClick={handleDelete} courses={props.courses} />
+        </>
+      )}
     </>
   );
 };
@@ -33,9 +48,10 @@ const CoursePage = (props) => {
 CoursePage.propTypes = {
   courses: PropTypes.array.isRequired,
   authors: PropTypes.array.isRequired,
-  createCourse: PropTypes.func.isRequired,
   loadCourses: PropTypes.func.isRequired,
   loadAuthors: PropTypes.func.isRequired,
+  deleteCourse: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -52,12 +68,13 @@ function mapStateToProps(state) {
             };
           }),
     authors: state.authors,
+    loading: state.apiCallInProgress > 0,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { createCourse, loadCourses, loadAuthors },
+    { loadCourses, loadAuthors, deleteCourse },
     dispatch
   );
 }
