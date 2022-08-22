@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 
-const ManageCourse = (props) => {
+export const ManageCourse = (props) => {
   const [course, setCourse] = useState(newCourse);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
