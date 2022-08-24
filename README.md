@@ -69,3 +69,27 @@
 | webpack-bundle-analyzer            | Generate report of what's in the app's production bundle         |
 | webpack-cli                        | Run Webpack via the command line                                 |
 | webpack-dev-server                 | Serve app via Webpack                                            |
+
+# Application Overview:
+
+This application is developed using React, React-Router and Redux.
+Redux is used for state management.
+Data flows unidirectionally in Redux.
+Need to implement the following for Redux:
+
+1. Actions: {type: Action_type, payload:{}} -> React components dispatch actions.
+2. Store: It will receive the action from React components, then it asks reducer to return updated state. After getting the updated state, store will let React components know about the change.
+3. Reducer:It take state and action as input, handles the action, performs logic and returns the updated state to Store.
+
+Thunk is used as middleware for Async Redux actions i.e. Api calls.
+Thunk is a function that returns new function, which will call API. On completion of API, it will dispatch actions.
+
+Unit tests are also written using jest, enzyme and react testing library for React Components, React Connected Components, Actions, Reducers and Stores.
+
+Also configured Store, webpack and package.json for Production Build. The bundle size of Production build is less compare to development build.
+
+It is a coures management application, where User can see the List of Pluralsigh courses.User can also add new course, edit existing course, watch the course as well as delete the course.
+
+Why Middleware for Async actions? Can't we call the api and on api success we can dispatch action.
+Ans. Benefit of using middleware like Redux Thunk or Redux Promise is that components aren’t aware of how action creators are implemented, and whether they care about Redux state, whether they are synchronous or asynchronous, and whether or not they call other action creators. The downside is a little bit of indirection, but we believe it’s worth it in real applications.
+|
