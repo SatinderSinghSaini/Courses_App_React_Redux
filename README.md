@@ -90,6 +90,7 @@ Also configured Store, webpack and package.json for Production Build. The bundle
 
 It is a coures management application, where User can see the List of Pluralsigh courses.User can also add new course, edit existing course, watch the course as well as delete the course.
 
-Why Middleware for Async actions? Can't we call the api and on api success we can dispatch action.
-Ans. Benefit of using middleware like Redux Thunk or Redux Promise is that components aren’t aware of how action creators are implemented, and whether they care about Redux state, whether they are synchronous or asynchronous, and whether or not they call other action creators. The downside is a little bit of indirection, but we believe it’s worth it in real applications.
+Why Middleware for Async actions? Can't we call the api and on api success we can dispatch action?
+
+Ans. Benefit of using middleware like Redux Thunk or Redux Promise is that components aren’t aware of how action creators are implemented, and whether they are synchronous/asynchronous or they are calling other action creators. The downside is a little bit of indirection, but we believe it’s worth it in real applications.
 |
